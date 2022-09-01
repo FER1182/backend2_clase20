@@ -1,11 +1,11 @@
 const express = require("express");
 const { Router } = express;
-const Contenedor = require("./contenedor");
+const {productosDao} = require("../../src/daos/index.js");
 const multer = require("multer");
 
 
 let router = new Router();
-let archivo = new Contenedor("text.json");
+
 
 const elapsed = Date.now();
 const hoy = new Date(elapsed)
@@ -16,7 +16,7 @@ const diaHoy= hoy.toLocaleDateString()
 /******************/
 //a.get
 router.get("/", async (req, res) => {
-  let data = await archivo.getAll();
+  let data = await productosDao.getAll();
 
   res.render("index", { data: data });
 });
@@ -50,7 +50,7 @@ router.post("/form", upload.single("myfile"), (req, res) => {
       price: req.body.price,
       stock: req.body.stock,
     };
-    let idProductoAgregado = archivo.save(newProduct);
+    let idProductoAgregado = productosDao.save(newProduct);
  
     console.log(`se guardo el producto ${idProductoAgregado}`)
     res.render("form");
@@ -62,7 +62,7 @@ router.post("/form", upload.single("myfile"), (req, res) => {
 //get:/':id?
 
 router.get("/productos/:id", async (req, res) => {
-  let data = await archivo.getById(req.params.id);
+  let data = await productosDao.getById(req.params.id);
   res.json(data);
 });
 
@@ -77,7 +77,7 @@ router.put("productos/:id", async (req, res) => {
       img: req.body.img,
     };
 
-    let data = await archivo.putById(req.params.id, newProduct);
+    let data = await productosDao.putById(req.params.id, newProduct);
     res.json(data);
   } else {
     res.send("error no esta autorizado apra acceder");
@@ -88,11 +88,11 @@ router.put("productos/:id", async (req, res) => {
 //c.delete
 router.delete("/productos/:id", async (req, res) => {
   if (req.query.admin) {
-    let data = await archivo.deleteById(req.params.id);
+    let data = await productosDao.deleteById(req.params.id);
     res.json(data);
   } else {
     res.send("error no esta autorizado apra acceder");
   }
 });
 
-module.exports = router;
+module.exports = productosRoutes;

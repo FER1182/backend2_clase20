@@ -1,6 +1,6 @@
 const express = require("express")
 const productosRoutes = require("./routes/routesProductos");
-const cartsRoutes = require("./routes/routesCarrito");
+const carritoRoutes = require("./routes/routesCarrito");
 
 const app = express()
 const port = process.env.PORT || 8080
@@ -15,8 +15,8 @@ app.set("view engine" ,"ejs")
 app.set("views","./views")
 
 app.use("/",productosRoutes);
-app.use("/api/productos",productosRoutes);
-app.use("/api/cart",cartsRoutes);
+app.use("/productos",productosRoutes);
+app.use("/cart",carritoRoutes);
 
 
 app.listen(port,()=>{

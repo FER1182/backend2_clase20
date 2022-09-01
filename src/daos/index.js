@@ -1,5 +1,8 @@
 let productosDao
 let carritosDao
+const dotenv = require("dotenv")
+dotenv.config()
+
 
 switch (process.env.PERS) {
     case 'archivo':
