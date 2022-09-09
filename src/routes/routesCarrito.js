@@ -1,9 +1,9 @@
-const express = require("express");
+import express from "express";
 const { Router } = express;
-const {carritosDao,productosDao} = require("../../src/daos/index.js");
-const multer = require("multer");
+import {carritosDao,productosDao} from "../daos/index.js";
+import multer from "multer";
 
-let router = new Router();
+let routesCarrito = new Router();
 
 
 
@@ -11,7 +11,7 @@ const elapsed = Date.now();
 const hoy = new Date(elapsed)
 const diaHoy= hoy.toLocaleDateString()
 
-router.post("/", (req, res) => {
+routesCarrito.post("/", (req, res) => {
   if (req.query.admin) {
     let newCarrito = {
       time: diaHoy,
@@ -25,18 +25,18 @@ router.post("/", (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+routesCarrito.delete("/:id", async (req, res) => {
   let data = await productosDao.deleteById(req.params.id);
   res.json(data);
   //res.send(productos);
 });
 
-router.get("/", async (req, res) => {
+routesCarrito.get("/", async (req, res) => {
   let data = await carritosDao.getAll();
   res.render("cart", { data: data });
 });
 
-router.get("/:id/productos", async (req, res) => {
+routesCarrito.get("/:id/productos", async (req, res) => {
   let data = await carritosDao.getAll();
   res.render("cart", { data: data });
 });
@@ -52,7 +52,7 @@ let storage = multer.diskStorage({
 
 let upload = multer({ storage });
 
-router.get("/form",(req,res)=>{
+routesCarrito.get("/form",(req,res)=>{
   res.render("form")
 })
 
@@ -60,7 +60,7 @@ router.get("/form",(req,res)=>{
 /************/
 /* SUMAR ARTICULOS AL CARRITO */
 
-router.post("/:id/productos/:idCarrito", (req, res) => {
+routesCarrito.post("/:id/productos/:idCarrito", (req, res) => {
   let data = productosDao.getAll();
   res.render("index", { data: data });
   let objSelect= data.find(x=>{
@@ -81,7 +81,7 @@ router.post("/:id/productos/:idCarrito", (req, res) => {
 /************/
 /* ELIMINAR ARTICULOS DEL CARRITO */
 
-router.delete("/:id/productos/:id_prod", async (req, res) => {
+routesCarrito.delete("/:id/productos/:id_prod", async (req, res) => {
   let carro = carritosDao.getAll
   let carSelect= carro.find(x=>{
     return x.id === req.params.id
@@ -96,4 +96,4 @@ router.delete("/:id/productos/:id_prod", async (req, res) => {
 
 
 
-module.exports = carritoRoutes;
+export default routesCarrito;

@@ -1,6 +1,12 @@
-const fs = require("fs");
+import fs from "fs";
 const encodingFile= "utf-8"
+import path from 'path';
+import {fileURLToPath} from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+
+// 👇️ "/home/john/Desktop/javascript"
+const __dirname = path.dirname(__filename);
 
 
 class ContenedorArchivo {
@@ -16,11 +22,11 @@ class ContenedorArchivo {
             : (obj.id = 1);
            
           siExiste.push(obj);
-          fs.writeFileSync(`../../../db/${this.nombre}`, JSON.stringify(siExiste));
+          fs.writeFileSync(`./db/${this.nombre}`, JSON.stringify(siExiste));
           return obj.id;
         } else {
           obj.id = 1;
-          fs.writeFileSync(`../../../db/${this.nombre}`, JSON.stringify([obj]));
+          fs.writeFileSync(`./db/${this.nombre}`, JSON.stringify([obj]));
           return obj.id;
         }
       } catch (e) {
@@ -58,14 +64,13 @@ class ContenedorArchivo {
   getAll() {
     // devuelve un array con los obj presentes en el archivo
 
-    if (fs.existsSync(`../../../db/${this.nombre}`)) {
-      let info = fs.readFileSync(`../../../db/${this.nombre}`, encodingFile);
+    if (fs.existsSync(`./db/${this.nombre}`)) {
+      let info = fs.readFileSync(`./db/${this.nombre}`, encodingFile);
      
       let archivoProducto = JSON.parse(info);
 
       return archivoProducto;
     } else {
-      
       return `No existe el archivo ${this.nombre}`;
     }
   }
@@ -86,7 +91,7 @@ class ContenedorArchivo {
     
                 if(newInfo.length < productos.length){
     
-            fs.writeFileSync( `../../../db/${this.nombre}`, JSON.stringify(newInfo))
+            fs.writeFileSync( `./db/${this.nombre}`, JSON.stringify(newInfo))
     
             return `El Id ${id} fue eliminado`
     
@@ -106,7 +111,7 @@ class ContenedorArchivo {
 
       // Elimina todos los objetos presentes en el archivo.
       
-      fs.writeFileSync( `../../../db/${this.nombre}`, JSON.stringify([]))
+      fs.writeFileSync( `./db/${this.nombre}`, JSON.stringify([]))
       
       return `Todos los objetos del archivo ‘${this.nombre}’ fueron eliminados`
       
@@ -148,4 +153,4 @@ class ContenedorArchivo {
 
 
 
-module.exports= ContenedorArchivo
+export default ContenedorArchivo

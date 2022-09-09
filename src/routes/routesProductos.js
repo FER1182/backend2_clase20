@@ -1,10 +1,10 @@
-const express = require("express");
+import express from "express";
 const { Router } = express;
-const {productosDao} = require("../../src/daos/index.js");
-const multer = require("multer");
+import {productosDao} from "../../src/daos/index.js";
+import multer from "multer";
 
 
-let router = new Router();
+let routesProductos = new Router();
 
 
 const elapsed = Date.now();
@@ -15,7 +15,7 @@ const diaHoy= hoy.toLocaleDateString()
 
 /******************/
 //a.get
-router.get("/", async (req, res) => {
+routesProductos.get("/", async (req, res) => {
   let data = await productosDao.getAll();
 
   res.render("index", { data: data });
@@ -32,13 +32,14 @@ let storage = multer.diskStorage({
 
 let upload = multer({ storage });
 
-router.get("/form", (req, res) => {
+routesProductos.get("/form", (req, res) => {
   res.render("form");
 });
 
 /******************/
 //b.post
-router.post("/form", upload.single("myfile"), (req, res) => {
+routesProductos.post("/form", upload.single("myfile"), (req, res) => {
+  console.log("estos es el form")
   req.query.admin = true
   if (req.query.admin) {
     let newProduct = {
@@ -61,7 +62,7 @@ router.post("/form", upload.single("myfile"), (req, res) => {
 /******************/
 //get:/':id?
 
-router.get("/productos/:id", async (req, res) => {
+routesProductos.get("/productos/:id", async (req, res) => {
   let data = await productosDao.getById(req.params.id);
   res.json(data);
 });
@@ -69,7 +70,7 @@ router.get("/productos/:id", async (req, res) => {
 /******************/
 //c.put
 
-router.put("productos/:id", async (req, res) => {
+routesProductos.put("productos/:id", async (req, res) => {
   if (req.query.admin) {
     let newProduct = {
       name: req.body.name,
@@ -86,7 +87,7 @@ router.put("productos/:id", async (req, res) => {
 
 /******************/
 //c.delete
-router.delete("/productos/:id", async (req, res) => {
+routesProductos.delete("/productos/:id", async (req, res) => {
   if (req.query.admin) {
     let data = await productosDao.deleteById(req.params.id);
     res.json(data);
@@ -95,4 +96,4 @@ router.delete("/productos/:id", async (req, res) => {
   }
 });
 
-module.exports = productosRoutes;
+export default routesProductos
