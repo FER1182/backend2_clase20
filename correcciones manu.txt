@@ -1,0 +1,21 @@
+buenas esta muy bien estructurado solo este contenedor no tiene nada:
+
+contenedorMongoDb.js
+
+
+
+esta vacio.
+
+
+
+falta el archivo config para la ultima consigna de
+
+
+
+Incluir un archivo de configuración (config) que contenga los datos correspondientes para conectarse a las bases de datos o medio de persistencia que corresponda.
+
+
+
+
+
+Fuera de eso est amuy bien, si pusheas el contenedor de mongo puedo aprobarte ya que es lo mas importante del desafio. par ael final
